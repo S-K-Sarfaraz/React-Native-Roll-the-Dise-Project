@@ -1,6 +1,7 @@
 import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { PropsWithChildren } from 'react'
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 
 import DiseOne from '../assets/One.png'
 import DiseTwo from '../assets/Two.png'
@@ -13,6 +14,12 @@ import DiseSix from '../assets/Six.png'
 type DiseProps = PropsWithChildren <{
   imageUrl: ImageSourcePropType
 }>
+
+const options = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: false,
+};
+
 
 
 // Dise uses that datatype and pass that prop into Image tag
@@ -28,12 +35,13 @@ export default function App(): JSX.Element {
 
   // useState uses the specific Datatype which does not accept any string
   const [diseOne, setDiseOne] = useState <ImageSourcePropType>(DiseOne)
+  const [diseTwo, setDiseTwo] = useState <ImageSourcePropType>(DiseOne)
 
   // This is used to get a random value between 1 to 6 with the help of switch case
-  const rollDiseOnTap =() => {
-    let randomNumber = Math.floor(Math.random() *6 +1 )
+  const rollDiseOnTapOne =() => {
+    let randomNumberOne = Math.floor(Math.random() *6 +1 )
     
-    switch (randomNumber) {
+    switch (randomNumberOne) {
       case 1:
         setDiseOne(DiseOne)
         break;
@@ -56,17 +64,60 @@ export default function App(): JSX.Element {
         setDiseOne(DiseOne)
         break;
     }
+    
+    ReactNativeHapticFeedback.trigger("impactHeavy", options);
   }
+
+  const rollDiseOnTapTwo = () => {
+    let randomNumberTwo = Math.floor(Math.random() *6 +1 )
+    switch (randomNumberTwo) {
+      case 1:
+        setDiseTwo(DiseOne)
+        break;
+      case 2:
+        setDiseTwo(DiseTwo)
+        break;
+      case 3:
+        setDiseTwo(DiseThree)
+        break;
+      case 4:
+        setDiseTwo(DiseFour)
+        break;
+      case 5:
+        setDiseTwo(DiseFive)
+        break;
+      case 6:
+        setDiseTwo(DiseSix)
+        break;
+      default:
+        setDiseTwo(DiseOne)
+        break;
+    }
+    ReactNativeHapticFeedback.trigger("impactHeavy", options);
+  } 
   
 
   return (
+
+
     <View style={styles.container}>
+
+      {/* // Dise One */}
       <Dise imageUrl={diseOne}/>
-      <Pressable onPress={rollDiseOnTap}>
+      <Pressable onPress={rollDiseOnTapOne}>
         <Text style={styles.rollDiceBtnText}>
           Tap To Roll
         </Text>
       </Pressable>
+
+      {/* Dise Two */}
+      <Dise imageUrl={diseTwo}/>
+      <Pressable onPress={rollDiseOnTapTwo}>
+        <Text style={styles.rollDiceBtnText}>
+          Tap To Roll
+        </Text>
+      </Pressable>
+      
     </View>
   )
 }
